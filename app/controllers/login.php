@@ -14,15 +14,11 @@ class Login extends Controller {
     }
 
     public function verify(){
-            $username = $_REQUEST['username'];
-            $password = $_REQUEST['password'];
+        $username = $_REQUEST['username'] ?? '';
+        $password = $_REQUEST['password'] ?? '';
 
-            $user = $this->model('User');
-
-            // Create admin user if it doesn't exist
-            $user->createAdminUser();
-
-            $user->authenticate($username, $password); 
+        $user = $this->model('User');
+        $user->authenticate($username, $password); 
     }
 
 }
