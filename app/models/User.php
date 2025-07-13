@@ -57,26 +57,29 @@ class User {
         return $result ? $result['id'] : null;
     }
 
-    public function createAdminUser($username, $password) {
+    public function createUser($username, $password) {
         $db = db_connect();
         if ($db === null) {
             return false;
         }
 
-        // Check if admin user already exists
-        $checkStatement = $db->prepare("SELECT id FROM users WHERE username = :username");
-        $checkStatement->bindValue(':username', strtolower($username));
-        $checkStatement->execute();
-
-        if ($checkStatement->fetch()) {
-            return false; // User already exists
-        }
-
-        // Create admin user with hashed password
+        // Hash the password
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $statement = $db->prepare("INSERT INTO users (username, password, is_admin) VALUES (:username, :password, 1)");
+
+        $statement = $db->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
         $statement->bindValue(':username', strtolower($username));
         $statement->bindValue(':password', $hashedPassword);
+        return $statement->execute();
+    }
+
+    public function logLogin($userId) {
+        $db = db_connect();
+        if ($db === null) {
+            return false;
+        }
+
+        $statement = $db->prepare("INSERT INTO login_log (user_id, login_time) VALUES (:user_id, NOW())");
+        $statement->bindValue(':user_id', $userId);
         return $statement->execute();
     }
 }
