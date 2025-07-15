@@ -10,7 +10,7 @@ class Reports extends Controller {
         }
 
         // Check if user is admin
-        if (!isset($_SESSION['username']) || strtolower($_SESSION['username']) !== 'admin') {
+        if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
             $_SESSION['error_message'] = "Access denied. Admin privileges required.";
             header('Location: /home');
             exit;

@@ -56,7 +56,7 @@ if (!isset($_SESSION['auth'])) {
                             <i class="fas fa-sticky-note"></i> My Reminders
                         </a>
                     </li>
-                    <?php if (isset($_SESSION['username']) && strtolower($_SESSION['username']) === 'admin'): ?>
+                    <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="/reports">
                             <i class="fas fa-chart-bar"></i> Admin Reports <span class="admin-badge">ADMIN</span>
@@ -77,7 +77,7 @@ if (!isset($_SESSION['auth'])) {
                 </ul>
                 <span class="navbar-text">
                     Welcome, <?php echo htmlspecialchars($_SESSION['username'] ?? 'User'); ?>
-                    <?php if (isset($_SESSION['username']) && strtolower($_SESSION['username']) === 'admin'): ?>
+                    <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
                         <span class="admin-badge">ADMIN</span>
                     <?php endif; ?>
                 </span>
