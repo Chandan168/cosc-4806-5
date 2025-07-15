@@ -82,4 +82,31 @@ class User {
         $statement->bindValue(':user_id', $userId);
         return $statement->execute();
     }
+
+    public function getLoginCounts() {
+        $db = db_connect();
+        if ($db === null) {
+            return [];
+        }
+        $statement = $db->prepare("
+            SELECT u.username, COUNT(ll.id) as login_count 
+            FROM users u 
+            LEFT JOIN login_log ll ON u.id = ll.user_id 
+            GROUP BY u.id, u.username 
+            ORDER BY login_count DESC
+        ");
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalUserCount() {
+        $db = db_connect();
+        if ($db === null) {
+            return 0;
+        }
+        $statement = $db->prepare("SELECT COUNT(*) as count FROM users");
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result['count'];
+    }
 }
