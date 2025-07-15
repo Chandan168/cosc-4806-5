@@ -94,7 +94,7 @@ class Reminder {
             SELECT r.*, u.username 
             FROM reminders r 
             LEFT JOIN users u ON r.user_id = u.id 
-            WHERE r.deleted = 0 
+            WHERE r.deleted = false 
             ORDER BY r.created_at DESC
         ");
         $statement->execute();
@@ -109,7 +109,7 @@ class Reminder {
         $statement = $db->prepare("
             SELECT u.username, COUNT(r.id) as reminder_count 
             FROM users u 
-            LEFT JOIN reminders r ON u.id = r.user_id AND r.deleted = 0 
+            LEFT JOIN reminders r ON u.id = r.user_id AND r.deleted = false
             GROUP BY u.id, u.username 
             ORDER BY reminder_count DESC
         ");
