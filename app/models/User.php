@@ -30,7 +30,7 @@ class User {
             $_SESSION['auth'] = 1;
             $_SESSION['username'] = ucwords($username);
             $_SESSION['user_id'] = $rows['id'];  // <-- SET user_id here
-            $_SESSION['is_admin'] = isset($rows['admin']) && $rows['admin'] == 1; // Set admin session
+            $_SESSION['is_admin'] = isset($rows['is_admin']) && $rows['is_admin'] == 1; // Set admin session
             unset($_SESSION['failedAuth']);
             header('Location: /home');
             exit;
