@@ -150,61 +150,6 @@ class Reminder {
             WHERE deleted = 0 
             GROUP BY DATE(created_at) 
             ORDER BY date DESC 
-            LIMIT 7
-        ");
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function getUserReminderCounts() {
-        $db = db_connect();
-        if ($db === null) {
-            return [];
-        }
-        $statement = $db->prepare("
-            SELECT u.username, COUNT(r.id) as reminder_count 
-            FROM users u 
-            LEFT JOIN reminders r ON u.id = r.user_id AND r.deleted = 0 
-            GROUP BY u.id, u.username 
-            ORDER BY reminder_count DESC
-        ");
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function getTotalReminderCount() {
-        $db = db_connect();
-        if ($db === null) {
-            return 0;
-        }
-        $statement = $db->prepare("SELECT COUNT(*) as count FROM reminders WHERE deleted = 0");
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return $result['count'];
-    }
-
-    public function getCompletedReminderCount() {
-        $db = db_connect();
-        if ($db === null) {
-            return 0;
-        }
-        $statement = $db->prepare("SELECT COUNT(*) as count FROM reminders WHERE deleted = 0 AND completed = 1");
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return $result['count'];
-    }
-
-    public function getRemindersByDate() {
-        $db = db_connect();
-        if ($db === null) {
-            return [];
-        }
-        $statement = $db->prepare("
-            SELECT DATE(created_at) as date, COUNT(*) as count 
-            FROM reminders 
-            WHERE deleted = 0 
-            GROUP BY DATE(created_at) 
-            ORDER BY date DESC 
             LIMIT 30
         ");
         $statement->execute();

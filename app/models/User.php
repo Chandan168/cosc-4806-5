@@ -21,7 +21,7 @@ class User {
     public function authenticate($username, $password) {
         $username = strtolower($username);
         $db = db_connect();
-        $statement = $db->prepare("SELECT * FROM users WHERE username = :name;");
+        $statement = $db->prepare("SELECT id, username, password, is_admin FROM users WHERE username = :name;");
         $statement->bindValue(':name', $username);
         $statement->execute();
         $rows = $statement->fetch(PDO::FETCH_ASSOC);
@@ -30,6 +30,7 @@ class User {
             $_SESSION['auth'] = 1;
             $_SESSION['username'] = ucwords($username);
             $_SESSION['user_id'] = $rows['id'];  // <-- SET user_id here
+            $_SESSION['is_admin'] = isset($rows['admin']) && $rows['admin'] == 1; // Set admin session
             unset($_SESSION['failedAuth']);
             header('Location: /home');
             exit;
