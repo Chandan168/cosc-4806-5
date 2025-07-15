@@ -79,7 +79,7 @@ class User {
             return false;
         }
 
-        $statement = $db->prepare("INSERT INTO login_log (user_id, login_time) VALUES (:user_id, NOW())");
+        $statement = $db->prepare("INSERT INTO login_logs (user_id, login_time) VALUES (:user_id, NOW())");
         $statement->bindValue(':user_id', $userId);
         return $statement->execute();
     }
@@ -92,7 +92,7 @@ class User {
         $statement = $db->prepare("
             SELECT u.username, COUNT(ll.id) as login_count 
             FROM users u 
-            LEFT JOIN login_log ll ON u.id = ll.user_id 
+            LEFT JOIN login_logs ll ON u.id = ll.user_id 
             GROUP BY u.id, u.username 
             ORDER BY login_count DESC
         ");
