@@ -169,8 +169,13 @@
 // User Reminders Pie Chart
 const userRemindersCtx = document.getElementById('userRemindersChart').getContext('2d');
 const userRemindersData = <?php echo json_encode($userReminderCounts ?? []); ?>;
+console.log('Chart.js loaded:', typeof Chart !== 'undefined');
+console.log('User Reminders Data:', userRemindersData);
+
 const userLabels = userRemindersData.map(item => item.username);
 const userCounts = userRemindersData.map(item => parseInt(item.reminder_count));
+console.log('User Labels:', userLabels);
+console.log('User Counts:', userCounts);
 
 new Chart(userRemindersCtx, {
     type: 'pie',
@@ -197,8 +202,12 @@ new Chart(userRemindersCtx, {
 // Reminders Over Time Line Chart
 const remindersTimeCtx = document.getElementById('remindersTimeChart').getContext('2d');
 const timeData = <?php echo json_encode($remindersByDate ?? []); ?>;
+console.log('Time Data:', timeData);
+
 const timeLabels = timeData.map(item => item.date);
 const timeCounts = timeData.map(item => parseInt(item.count));
+console.log('Time Labels:', timeLabels);
+console.log('Time Counts:', timeCounts);
 
 new Chart(remindersTimeCtx, {
     type: 'line',
