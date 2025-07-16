@@ -31,6 +31,10 @@ class User {
             $_SESSION['username'] = ucwords($username);
             $_SESSION['user_id'] = $rows['id'];  // <-- SET user_id here
             $_SESSION['is_admin'] = isset($rows['is_admin']) && $rows['is_admin'] == 1; // Set admin session
+
+            // Log the successful login
+            $this->logLogin($rows['id']);
+
             unset($_SESSION['failedAuth']);
             header('Location: /home');
             exit;
@@ -79,7 +83,8 @@ class User {
             return false;
         }
 
-        $statement = $db->prepare("INSERT INTO login_logs (user_id, login_time) VALUES (:user_id, NOW())");
+        // Changed login_time to attempt_time
+        $statement = $db->prepare("INSERT INTO login_logs (user_id, attempt_time) VALUES (:user_id, NOW())");
         $statement->bindValue(':user_id', $userId);
         return $statement->execute();
     }
