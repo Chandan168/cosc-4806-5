@@ -19,6 +19,14 @@ class Reports extends Controller {
 
     public function index() {
         $data = $this->getAllReportsData();
+        
+        // Debug output
+        error_log("Debug - Total Reminders: " . ($data['totalReminders'] ?? 'null'));
+        error_log("Debug - Total Users: " . ($data['totalUsers'] ?? 'null'));
+        error_log("Debug - All Reminders count: " . count($data['allReminders'] ?? []));
+        error_log("Debug - User Reminder Counts: " . print_r($data['userReminderCounts'] ?? [], true));
+        error_log("Debug - Login Counts: " . print_r($data['loginCounts'] ?? [], true));
+        
         $this->view('reports/index', $data);
     }
 
