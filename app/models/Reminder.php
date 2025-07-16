@@ -78,9 +78,9 @@ class Reminder {
         if ($db === null) {
             return false;
         }
-        $statement = $db->prepare("UPDATE reminders SET completed = TRUE WHERE id = :id AND user_id = :user_id");
-        $statement->bindValue(':id', $id, PDO::PARAM_INT);
-        $statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $statement = $db->prepare("UPDATE reminders SET completed = 1 WHERE id = :id AND user_id = :user_id");
+        $statement->bindValue(':id', $id);
+        $statement->bindValue(':user_id', $user_id);
         return $statement->execute();
     }
 
@@ -94,7 +94,7 @@ class Reminder {
             SELECT r.*, u.username 
             FROM reminders r 
             LEFT JOIN users u ON r.user_id = u.id 
-            WHERE r.deleted = FALSE 
+            WHERE r.deleted = false 
             ORDER BY r.created_at DESC
         ");
         $statement->execute();
@@ -109,7 +109,7 @@ class Reminder {
         $statement = $db->prepare("
             SELECT u.username, COUNT(r.id) as reminder_count 
             FROM users u 
-            LEFT JOIN reminders r ON u.id = r.user_id AND r.deleted = FALSE
+            LEFT JOIN reminders r ON u.id = r.user_id AND r.deleted = false
             GROUP BY u.id, u.username 
             ORDER BY reminder_count DESC
         ");
@@ -122,7 +122,7 @@ class Reminder {
         if ($db === null) {
             return 0;
         }
-        $statement = $db->prepare("SELECT COUNT(*) as count FROM reminders WHERE deleted = FALSE");
+        $statement = $db->prepare("SELECT COUNT(*) as count FROM reminders WHERE deleted = false");
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result['count'];
@@ -133,7 +133,7 @@ class Reminder {
         if ($db === null) {
             return 0;
         }
-        $statement = $db->prepare("SELECT COUNT(*) as count FROM reminders WHERE deleted = FALSE AND completed = TRUE");
+        $statement = $db->prepare("SELECT COUNT(*) as count FROM reminders WHERE deleted = false AND completed = true");
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result['count'];
@@ -147,7 +147,7 @@ class Reminder {
         $statement = $db->prepare("
             SELECT DATE(created_at) as date, COUNT(*) as count 
             FROM reminders 
-            WHERE deleted = FALSE 
+            WHERE deleted = false 
             GROUP BY DATE(created_at) 
             ORDER BY date DESC 
             LIMIT 30

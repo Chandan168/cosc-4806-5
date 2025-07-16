@@ -26,14 +26,15 @@ class Reports extends Controller {
         $reminder = $this->model('Reminder');
         $user = $this->model('User');
 
+        // Get data with fallback to empty arrays/zero if database fails
         return [
-            'allReminders' => $reminder->getAllReminders(),
-            'userReminderCounts' => $reminder->getUserReminderCounts(),
-            'loginCounts' => $user->getLoginCounts(),
-            'totalReminders' => $reminder->getTotalReminderCount(),
-            'totalUsers' => $user->getTotalUserCount(),
-            'completedReminders' => $reminder->getCompletedReminderCount(),
-            'remindersByDate' => $reminder->getRemindersByDate()
+            'allReminders' => $reminder->getAllReminders() ?: [],
+            'userReminderCounts' => $reminder->getUserReminderCounts() ?: [],
+            'loginCounts' => $user->getLoginCounts() ?: [],
+            'totalReminders' => $reminder->getTotalReminderCount() ?: 0,
+            'totalUsers' => $user->getTotalUserCount() ?: 0,
+            'completedReminders' => $reminder->getCompletedReminderCount() ?: 0,
+            'remindersByDate' => $reminder->getRemindersByDate() ?: []
         ];
     }
 
