@@ -48,7 +48,15 @@
                                         echo strlen($content) > 50 ? substr($content, 0, 50) . '...' : $content;
                                         ?>
                                     </td>
-                                    <td><?php echo date('M j, Y g:i A', strtotime($reminder['created_at'])); ?></td>
+                                    <td>
+                                        <?php 
+                                        if (!empty($reminder['created_at'])) {
+                                            echo date('M j, Y g:i A', strtotime($reminder['created_at']));
+                                        } else {
+                                            echo 'N/A';
+                                        }
+                                        ?>
+                                    </td>
                                     <td>
                                         <?php if ($reminder['completed']): ?>
                                             <span class="badge bg-success"><i class="fas fa-check"></i> Completed</span>

@@ -29,16 +29,19 @@ class User {
         if ($rows && password_verify($password, $rows['password'])) {
             $_SESSION['auth'] = 1;
             $_SESSION['username'] = ucwords($username);
-            $_SESSION['user_id'] = $rows['id'];  // <-- SET user_id here
-            $_SESSION['is_admin'] = isset($rows['is_admin']) && $rows['is_admin'] == 1; // Set admin session
+            $_SESSION['user_id'] = $rows['id'];
+            $_SESSION['is_admin'] = isset($rows['is_admin']) && $rows['is_admin'] == 1;
 
-            // Log the successful login
-            $this->logLogin($rows['id']);
+            // Log successful login
+            $this->logLogin($rows['id'], 'good');
 
             unset($_SESSION['failedAuth']);
             header('Location: /home');
             exit;
         } else {
+            // Log failed login attempt with user_id as null
+            $this->logLogin(null, 'bad');
+
             if (isset($_SESSION['failedAuth'])) {
                 $_SESSION['failedAuth']++;
             } else {
@@ -77,15 +80,25 @@ class User {
         return $statement->execute();
     }
 
-    public function logLogin($userId) {
+    public function logLogin($userId, $attempt = 'good') {
         $db = db_connect();
         if ($db === null) {
             return false;
         }
 
-        // Changed login_time to attempt_time
-        $statement = $db->prepare("INSERT INTO login_logs (user_id, attempt_time) VALUES (:user_id, NOW())");
-        $statement->bindValue(':user_id', $userId);
+        $username = $_SESSION['username'] ?? 'unknown';
+
+        $statement = $db->prepare("INSERT INTO login_logs (user_id, username, attempt, attempt_time) VALUES (:user_id, :username, :attempt, NOW())");
+
+        if ($userId !== null) {
+            $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        } else {
+            $statement->bindValue(':user_id', null, PDO::PARAM_NULL);
+        }
+
+        $statement->bindValue(':username', $username);
+        $statement->bindValue(':attempt', $attempt);
+
         return $statement->execute();
     }
 
