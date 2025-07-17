@@ -48,7 +48,7 @@
 </div>
 
 <script>
-// Auto-resize textarea
+
 document.getElementById('content').addEventListener('input', function() {
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';

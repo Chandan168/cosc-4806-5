@@ -250,7 +250,6 @@ class Notes extends Controller {
             die;
         }
         
-        // Get note ID from URL segments
         $url_parts = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
         $note_id = end($url_parts);
         

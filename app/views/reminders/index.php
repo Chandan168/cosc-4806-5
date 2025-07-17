@@ -16,7 +16,7 @@
                         <?php
                         if (!empty($reminder['created_at'])) {
                             $dt = new DateTime($reminder['created_at'], new DateTimeZone('UTC'));
-                            $dt->setTimezone(new DateTimeZone('America/Toronto')); // Adjust if you're in a different zone
+                            $dt->setTimezone(new DateTimeZone('America/Toronto')); 
                             echo '<small class="text-muted">Created at: ' . $dt->format('M d, Y g:i A') . '</small>';
                         }
                         ?>

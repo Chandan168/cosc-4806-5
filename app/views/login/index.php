@@ -17,7 +17,7 @@
                     <div id="countdown-timer" style="margin-top: 10px; font-weight: bold;"></div>
                 </div>
                 <script>
-                // Extract seconds from lockout message
+               
                 let lockoutMessage = "<?php echo addslashes($_SESSION['lockout_message']); ?>";
                 let matches = lockoutMessage.match(/(\d+) seconds/);
                 if (matches) {

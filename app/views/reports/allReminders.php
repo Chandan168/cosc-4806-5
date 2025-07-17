@@ -51,7 +51,9 @@
                                     <td>
                                         <?php 
                                         if (!empty($reminder['created_at'])) {
-                                            echo date('M j, Y g:i A', strtotime($reminder['created_at']));
+                                            $utc = new DateTime($reminder['created_at'], new DateTimeZone('UTC'));
+                                            $utc->setTimezone(new DateTimeZone('America/Toronto'));
+                                            echo $utc->format('M j, Y g:i A');
                                         } else {
                                             echo 'N/A';
                                         }

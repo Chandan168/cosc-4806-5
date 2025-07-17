@@ -98,7 +98,6 @@ document.getElementById('content').addEventListener('input', function() {
     this.style.height = this.scrollHeight + 'px';
 });
 
-// Set initial height
 window.addEventListener('load', function() {
     const content = document.getElementById('content');
     content.style.height = 'auto';

@@ -23,7 +23,7 @@ class App {
             }
             
         } else {
-            // Set default controller based on authentication only if no URL controller
+    
             if (isset($_SESSION['auth']) && $_SESSION['auth'] == 1) {
                 $this->controller = 'home';
             }
@@ -57,7 +57,6 @@ class App {
             return $url;
         }
         
-        // Fallback: parse from REQUEST_URI for PHP built-in server
         if (isset($_SERVER['REQUEST_URI'])) {
             $uri = $_SERVER['REQUEST_URI'];
             // Remove query string
