@@ -144,9 +144,12 @@
                                             <td>
                                                 <?php 
                                                 if (!empty($reminder['created_at'])) {
-                                                    echo date('M j, Y g:i A', strtotime($reminder['created_at']));
+                                                    $dt = new DateTime($reminder['created_at'], new DateTimeZone('UTC'));
+                                                    $dt->setTimezone(new DateTimeZone('America/Toronto')); 
+                                                    echo $dt->format('M j, Y g:i A');
                                                 } else {
-                                                    echo date('M j, Y g:i A'); // current date/time fallback
+                                                    $dt = new DateTime('now', new DateTimeZone('Asia/Kolkata'));
+                                                    echo $dt->format('M j, Y g:i A');
                                                 }
                                                 ?>
                                             </td>
@@ -234,4 +237,3 @@ new Chart(remindersTimeCtx, {
 </script>
 
 <?php require_once 'app/views/templates/footer.php' ?>
-

@@ -9,11 +9,24 @@
     <?php else: ?>
         <div class="row">
             <?php foreach ($data['reminders'] as $reminder): ?>
-                <div class="col-md-6">
-                    <h5><?php echo htmlspecialchars($reminder['subject']); ?></h5>
-                    <a href="/reminders/edit/<?php echo $reminder['id']; ?>" class="btn btn-warning">Edit</a>
-                    <a href="/reminders/delete/<?php echo $reminder['id']; ?>" class="btn btn-danger"
-                       onclick="return confirm('Are you sure you want to delete this note?')">Delete</a>
+                <div class="col-md-6 mb-4">
+                    <div class="card p-3 shadow-sm rounded">
+                        <h5><?php echo htmlspecialchars($reminder['subject']); ?></h5>
+
+                        <?php
+                        if (!empty($reminder['created_at'])) {
+                            $dt = new DateTime($reminder['created_at'], new DateTimeZone('UTC'));
+                            $dt->setTimezone(new DateTimeZone('America/Toronto')); // Adjust if you're in a different zone
+                            echo '<small class="text-muted">Created at: ' . $dt->format('M d, Y g:i A') . '</small>';
+                        }
+                        ?>
+
+                        <div class="mt-2">
+                            <a href="/reminders/edit/<?php echo $reminder['id']; ?>" class="btn btn-warning">Edit</a>
+                            <a href="/reminders/delete/<?php echo $reminder['id']; ?>" class="btn btn-danger"
+                               onclick="return confirm('Are you sure you want to delete this note?')">Delete</a>
+                        </div>
+                    </div>
                 </div>
             <?php endforeach; ?>
         </div>

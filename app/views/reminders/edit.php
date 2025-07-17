@@ -49,7 +49,15 @@
                         <div class="row">
                             <div class="col-6">
                                 <small class="text-muted">
-                                    Created: <?php echo date('M j, Y g:i A', strtotime($data['reminder']['created_at'])); ?>
+                                    Created: 
+                                    <?php 
+                                    $createdAt = $data['reminder']['created_at'] ?? null;
+                                    if ($createdAt) {
+                                        echo date('M j, Y g:i A', strtotime($createdAt));
+                                    } else {
+                                        echo 'N/A';
+                                    }
+                                    ?>
                                 </small>
                             </div>
                             <div class="col-6 text-end">
