@@ -144,15 +144,19 @@ class Reminder {
         if ($db === null) {
             return [];
         }
+
         $statement = $db->prepare("
-            SELECT DATE(created_at) as date, COUNT(*) as count 
-            FROM reminders 
-            WHERE deleted = false 
-            GROUP BY DATE(created_at) 
-            ORDER BY date DESC 
+            SELECT 
+                DATE(created_at AT TIME ZONE 'UTC' AT TIME ZONE 'America/Toronto') AS date,
+                COUNT(*) AS count
+            FROM reminders
+            WHERE deleted = false
+            GROUP BY DATE(created_at AT TIME ZONE 'UTC' AT TIME ZONE 'America/Toronto')
+            ORDER BY date DESC
             LIMIT 30
         ");
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+
